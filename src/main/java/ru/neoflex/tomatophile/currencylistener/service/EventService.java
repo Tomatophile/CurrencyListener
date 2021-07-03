@@ -5,6 +5,7 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import ru.neoflex.tomatophile.currencylistener.pojo.Cryptocurrency;
 import ru.neoflex.tomatophile.currencylistener.pojo.Event;
 import ru.neoflex.tomatophile.currencylistener.pojo.Subscribe;
 
@@ -93,5 +94,18 @@ public class EventService {
             i--;
             restTemplate.postForObject(url, error, String.class);
         }
+    }
+
+    public Event getOne(String figi){
+        Event event = null;
+
+        try {
+            var cur = coinMarketCapService.getOneByFigi(figi);
+            event = Event.builder().figi(figi).price(cur.getPrice()).build();
+        } catch (Exception e){
+            return null;
+        }
+
+        return event;
     }
 }

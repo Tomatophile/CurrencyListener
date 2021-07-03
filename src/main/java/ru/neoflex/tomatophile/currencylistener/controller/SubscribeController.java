@@ -2,10 +2,10 @@ package ru.neoflex.tomatophile.currencylistener.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import ru.neoflex.tomatophile.currencylistener.pojo.Event;
 import ru.neoflex.tomatophile.currencylistener.pojo.Subscribe;
+import ru.neoflex.tomatophile.currencylistener.service.EventService;
 import ru.neoflex.tomatophile.currencylistener.service.SubscribeService;
 
 @RestController
@@ -13,6 +13,8 @@ import ru.neoflex.tomatophile.currencylistener.service.SubscribeService;
 public class SubscribeController {
 
     private final SubscribeService subscribeService;
+
+    private final EventService eventService;
 
     @PostMapping("/subscribe/update")
     public ResponseEntity<Subscribe> subscribeOnUpdate(@RequestBody Subscribe subscribe){
@@ -30,4 +32,14 @@ public class SubscribeController {
     public void unsubscribeOnUpdate(@RequestBody Subscribe subscribe){
         subscribeService.unsubscribeOnUpdate(subscribe);
     }
+
+    @GetMapping("/get")
+    public ResponseEntity<Event> getOne(@RequestParam String figi){
+        var event = eventService.getOne(figi);
+        if(event!=null){
+            return ResponseEntity.ok(eventService.getOne(figi));
+        }
+        return ResponseEntity.notFound().build();
+    }
+
 }
