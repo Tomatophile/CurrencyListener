@@ -1,0 +1,8 @@
+server.port: 8081
+
+cryptoKoshBot.url: http://localhost:8082/
+
+coinMarketCap.api:
+  url: https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?symbol=
+  headerKey: X-CMC_PRO_API_KEY
+  key: 156eba7b-1b73-45b2-a4d6-2fa4c6c9de60
