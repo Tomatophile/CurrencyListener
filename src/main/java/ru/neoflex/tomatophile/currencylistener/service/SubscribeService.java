@@ -22,17 +22,14 @@ public class SubscribeService {
     }
 
     public void subscribeOnFall(Subscribe subscribe){
-        Double lastPrice =null;
-
         try {
-            lastPrice = coinMarketCapService.getOneByFigi(subscribe.getFigi()).getPrice();
+            var lastPrice = coinMarketCapService.getOneByFigi(subscribe.getFigi()).getPrice();
+            subscribe.setLastPrice(lastPrice);
+            subscribesOnFall.add(subscribe);
         } catch (Exception e){
             eventService.errorEvent(subscribe.getChatId());
         }
 
-        subscribe.setLastPrice(lastPrice);
-
-        subscribesOnFall.add(subscribe);
     }
 
     public void unsubscribeOnUpdate(Subscribe subscribe) {
