@@ -38,13 +38,20 @@ public class EventService {
     public void updateEvent() {
         var url = cryptoKoshBotUrl.concat(updateUrl);
 
-        for (var subscribe : subscribesOnUpdate) {
+        for (var i = 0; i < subscribesOnUpdate.size(); i++){
+            var subscribe = subscribesOnUpdate.get(i);
             var chatId = subscribe.getChatId();
             var figi = subscribe.getFigi();
 
-            var event = Event.builder().chatId(chatId).figi(figi).price(coinMarketCapService.getOneByFigi(figi).getPrice()).build();
+            try {
+                var event = Event.builder().chatId(chatId).figi(figi).price(coinMarketCapService.getOneByFigi(figi).getPrice()).build();
 
-            restTemplate.postForObject(url, event, Event.class);
+                restTemplate.postForObject(url, event, Event.class);
+            } catch (Exception e){
+                subscribesOnUpdate.remove(subscribe);
+
+                i--;
+            }
         }
     }
 
@@ -57,15 +64,21 @@ public class EventService {
             var figi = subscribesOnFall.get(i).getFigi();
 
             var lastCurrency = subscribesOnFall.get(i);
-            var currCurrency = coinMarketCapService.getOneByFigi(lastCurrency.getFigi());
 
-            if(lastCurrency.getLastPrice() - lastCurrency.getLastPrice()*lastCurrency.getFallPercent()/100 >= currCurrency.getPrice()){
+            try {
+                var currCurrency = coinMarketCapService.getOneByFigi(lastCurrency.getFigi());
+
+                if (lastCurrency.getLastPrice() - lastCurrency.getLastPrice() * lastCurrency.getFallPercent() / 100 >= currCurrency.getPrice()) {
+                    subscribesOnFall.remove(lastCurrency);
+                    i--;
+
+                    var event = Event.builder().chatId(chatId).figi(figi).price(currCurrency.getPrice()).build();
+
+                    restTemplate.postForObject(url, event, Event.class);
+                }
+            } catch (Exception e){
                 subscribesOnFall.remove(lastCurrency);
                 i--;
-
-                var event = Event.builder().chatId(chatId).figi(figi).price(currCurrency.getPrice()).build();
-
-                restTemplate.postForObject(url, event, Event.class);
             }
         }
     }
