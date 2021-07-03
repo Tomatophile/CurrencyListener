@@ -4,6 +4,7 @@ cryptoKoshBot:
   baseUrl: ${BOT_BASE_URL}
   updateUrl: event/update
   fallUrl: event/fall
+  errorUrl: event/error
 
 coinMarketCap.api:
   url: https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?symbol=

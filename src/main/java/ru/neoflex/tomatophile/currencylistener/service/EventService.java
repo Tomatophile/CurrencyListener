@@ -13,11 +13,13 @@ import java.util.List;
 @Service
 public class EventService {
     @Value("${cryptoKoshBot.baseUrl}")
-    private String cryptoKoshBotUrl;
+    private String baseUrl;
     @Value("${cryptoKoshBot.updateUrl}")
     private String updateUrl;
     @Value("${cryptoKoshBot.fallUrl}")
     private String fallUrl;
+    @Value("${cryptoKoshBot.errorUrl}")
+    private String errorUrl;
 
     private final List<Subscribe> subscribesOnUpdate;
     private final List<Subscribe> subscribesOnFall;
@@ -36,7 +38,7 @@ public class EventService {
 
     @Scheduled(fixedRate = 3000)
     public void updateEvent() {
-        var url = cryptoKoshBotUrl.concat(updateUrl);
+        var url = baseUrl.concat(updateUrl);
 
         for (var i = 0; i < subscribesOnUpdate.size(); i++){
             var subscribe = subscribesOnUpdate.get(i);
@@ -49,15 +51,16 @@ public class EventService {
                 restTemplate.postForObject(url, event, Event.class);
             } catch (Exception e){
                 subscribesOnUpdate.remove(subscribe);
-
                 i--;
+
+                restTemplate.postForObject(baseUrl.concat(errorUrl), chatId, String.class);
             }
         }
     }
 
     @Scheduled(fixedRate = 30000)
     public void fallEvent() {
-        var url = cryptoKoshBotUrl.concat(fallUrl);
+        var url = baseUrl.concat(fallUrl);
 
         for (var i = 0; i < subscribesOnFall.size(); i++) {
             var chatId = subscribesOnFall.get(i).getChatId();
@@ -79,6 +82,8 @@ public class EventService {
             } catch (Exception e){
                 subscribesOnFall.remove(lastCurrency);
                 i--;
+
+                restTemplate.postForObject(baseUrl.concat(errorUrl), chatId, String.class);
             }
         }
     }
