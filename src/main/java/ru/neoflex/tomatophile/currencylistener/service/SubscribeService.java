@@ -31,7 +31,11 @@ public class SubscribeService {
         }
     }
 
-    public void unsubscribeOnUpdate(Subscribe subscribe) {
-        subscribesOnUpdate.remove(subscribe);
+    public boolean unsubscribeOnUpdate(Subscribe subscribe) {
+        if(subscribesOnUpdate.contains(subscribe)){
+            subscribesOnUpdate.remove(subscribe);
+            return true;
+        }
+        return false;
     }
 }

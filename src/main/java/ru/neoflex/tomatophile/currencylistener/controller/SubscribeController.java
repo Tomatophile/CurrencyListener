@@ -29,8 +29,11 @@ public class SubscribeController {
     }
 
     @PostMapping("/unsubscribe/update")
-    public void unsubscribeOnUpdate(@RequestBody Subscribe subscribe) {
-        subscribeService.unsubscribeOnUpdate(subscribe);
+    public ResponseEntity<Subscribe> unsubscribeOnUpdate(@RequestBody Subscribe subscribe) {
+        if(subscribeService.unsubscribeOnUpdate(subscribe)){
+            return ResponseEntity.ok(subscribe);
+        }
+        return ResponseEntity.notFound().build();
     }
 
     @GetMapping("/get")
