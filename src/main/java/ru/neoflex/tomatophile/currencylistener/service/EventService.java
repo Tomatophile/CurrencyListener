@@ -12,8 +12,12 @@ import java.util.List;
 
 @Service
 public class EventService {
-    @Value("${cryptoKoshBot.url}")
+    @Value("${cryptoKoshBot.baseUrl}")
     private String cryptoKoshBotUrl;
+    @Value("${cryptoKoshBot.updateUrl}")
+    private String updateUrl;
+    @Value("${cryptoKoshBot.fallUrl}")
+    private String fallUrl;
 
     private final List<Subscribe> subscribesOnUpdate;
     private final List<Subscribe> subscribesOnFall;
@@ -32,7 +36,7 @@ public class EventService {
 
     @Scheduled(fixedRate = 3000)
     public void updateEvent() {
-        var url = cryptoKoshBotUrl.concat("event/update");
+        var url = cryptoKoshBotUrl.concat(updateUrl);
 
         for (var subscribe : subscribesOnUpdate) {
             var chatId = subscribe.getChatId();
@@ -46,7 +50,7 @@ public class EventService {
 
     @Scheduled(fixedRate = 30000)
     public void fallEvent() {
-        var url = cryptoKoshBotUrl.concat("event/fall");
+        var url = cryptoKoshBotUrl.concat(fallUrl);
 
         for (var i = 0; i < subscribesOnFall.size(); i++) {
             var chatId = subscribesOnFall.get(i).getChatId();

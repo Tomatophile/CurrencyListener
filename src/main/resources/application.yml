@@ -1,6 +1,9 @@
-server.port: 8081
+server.port: ${PORT}
 
-cryptoKoshBot.url: http://localhost:8082/
+cryptoKoshBot:
+  baseUrl: http://localhost:8082/
+  updateUrl: event/update
+  fallUrl: event/fall
 
 coinMarketCap.api:
   url: https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?symbol=
