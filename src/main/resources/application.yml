@@ -1,9 +1,7 @@
 server.port: ${PORT}
-#server.port: 8081
 
 cryptoKoshBot:
   baseUrl: ${BOT_BASE_URL}
-#  baseUrl: http://localhost:8082/
   updateUrl: event/update
   fallUrl: event/fall
   errorUrl: event/error
@@ -12,8 +10,3 @@ coinMarketCap.api:
   url: https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?symbol=
   headerKey: X-CMC_PRO_API_KEY
   key: ${API_KEY}
-
-#coinMarketCap.api:
-#  url: https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?symbol=
-#  headerKey: X-CMC_PRO_API_KEY
-#  key: 156eba7b-1b73-45b2-a4d6-2fa4c6c9de60
