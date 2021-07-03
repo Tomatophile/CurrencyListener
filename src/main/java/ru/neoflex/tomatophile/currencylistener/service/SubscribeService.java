@@ -21,15 +21,16 @@ public class SubscribeService {
         subscribesOnUpdate.add(subscribe);
     }
 
-    @SneakyThrows
     public void subscribeOnFall(Subscribe subscribe){
+        Double lastPrice =null;
+
         try {
-            var lastPrice = coinMarketCapService.getOneByFigi(subscribe.getFigi()).getPrice();
-            subscribe.setLastPrice(lastPrice);
+            lastPrice = coinMarketCapService.getOneByFigi(subscribe.getFigi()).getPrice();
         } catch (Exception e){
-            Thread.sleep(3000);
             eventService.errorEvent(subscribe.getChatId());
         }
+
+        subscribe.setLastPrice(lastPrice);
 
         subscribesOnFall.add(subscribe);
     }
