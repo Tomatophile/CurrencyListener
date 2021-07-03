@@ -17,16 +17,16 @@ public class SubscribeService {
 
     private final EventService eventService;
 
-    public void subscribeOnUpdate(Subscribe subscribe){
+    public void subscribeOnUpdate(Subscribe subscribe) {
         subscribesOnUpdate.add(subscribe);
     }
 
-    public void subscribeOnFall(Subscribe subscribe){
+    public void subscribeOnFall(Subscribe subscribe) {
         try {
             var lastPrice = coinMarketCapService.getOneByFigi(subscribe.getFigi()).getPrice();
             subscribe.setLastPrice(lastPrice);
             subscribesOnFall.add(subscribe);
-        } catch (Exception e){
+        } catch (Exception e) {
             errors.add(subscribe.getChatId());
         }
     }

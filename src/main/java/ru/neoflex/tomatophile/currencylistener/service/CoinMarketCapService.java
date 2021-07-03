@@ -29,7 +29,7 @@ public class CoinMarketCapService {
         var url = quotesUrl.concat(figi);
 
         var headers = new HttpHeaders();
-        headers.add(headerKey,key);
+        headers.add(headerKey, key);
         var entity = new HttpEntity<String>(headers);
 
         ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);

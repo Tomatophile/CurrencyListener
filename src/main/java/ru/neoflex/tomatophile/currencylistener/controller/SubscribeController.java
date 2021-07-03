@@ -17,26 +17,26 @@ public class SubscribeController {
     private final EventService eventService;
 
     @PostMapping("/subscribe/update")
-    public ResponseEntity<Subscribe> subscribeOnUpdate(@RequestBody Subscribe subscribe){
+    public ResponseEntity<Subscribe> subscribeOnUpdate(@RequestBody Subscribe subscribe) {
         subscribeService.subscribeOnUpdate(subscribe);
         return ResponseEntity.ok(subscribe);
     }
 
     @PostMapping("/subscribe/fall")
-    public ResponseEntity<Subscribe> subscribeOnFall(@RequestBody Subscribe subscribe){
+    public ResponseEntity<Subscribe> subscribeOnFall(@RequestBody Subscribe subscribe) {
         subscribeService.subscribeOnFall(subscribe);
         return ResponseEntity.ok(subscribe);
     }
 
     @PostMapping("/unsubscribe/update")
-    public void unsubscribeOnUpdate(@RequestBody Subscribe subscribe){
+    public void unsubscribeOnUpdate(@RequestBody Subscribe subscribe) {
         subscribeService.unsubscribeOnUpdate(subscribe);
     }
 
     @GetMapping("/get")
-    public ResponseEntity<Event> getOne(@RequestParam String figi){
+    public ResponseEntity<Event> getOne(@RequestParam String figi) {
         var event = eventService.getOne(figi);
-        if(event!=null){
+        if (event != null) {
             return ResponseEntity.ok(eventService.getOne(figi));
         }
         return ResponseEntity.notFound().build();

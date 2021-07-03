@@ -12,14 +12,17 @@ import java.util.List;
 @EnableScheduling
 public class SubscribeConfig {
     @Bean
-    public List<Subscribe> subscribesOnUpdate(){
+    public List<Subscribe> subscribesOnUpdate() {
         return new ArrayList<>();
     }
+
     @Bean
-    public List<Subscribe> subscribesOnFall(){
+    public List<Subscribe> subscribesOnFall() {
         return new ArrayList<>();
     }
-    @Bean List<String> errors(){
+
+    @Bean
+    List<String> errors() {
         return new ArrayList<>();
     }
 }
