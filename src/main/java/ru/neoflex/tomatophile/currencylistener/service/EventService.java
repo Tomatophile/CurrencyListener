@@ -55,7 +55,7 @@ public class EventService {
                 subscribesOnUpdate.remove(subscribe);
                 i--;
 
-                errorEvent(chatId);
+                errors.add(chatId);
             }
         }
     }
@@ -84,7 +84,7 @@ public class EventService {
     }
 
     @Scheduled(fixedRate = 3000)
-    public void errorEvent(String chatId){
+    public void errorEvent(){
         var url = baseUrl.concat(errorUrl);
 
         for (var i = 0; i < errors.size(); i++){
