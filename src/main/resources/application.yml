@@ -1,7 +1,7 @@
 server.port: ${PORT}
 
 cryptoKoshBot:
-  baseUrl: http://localhost:8082/
+  baseUrl: ${BOT_BASE_URL}
   updateUrl: event/update
   fallUrl: event/fall
 
