@@ -19,4 +19,7 @@ public class SubscribeConfig {
     public List<Subscribe> subscribesOnFall(){
         return new ArrayList<>();
     }
+    @Bean List<String> errors(){
+        return new ArrayList<>();
+    }
 }

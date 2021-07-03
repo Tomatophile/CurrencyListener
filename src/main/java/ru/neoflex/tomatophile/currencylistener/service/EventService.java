@@ -23,15 +23,17 @@ public class EventService {
 
     private final List<Subscribe> subscribesOnUpdate;
     private final List<Subscribe> subscribesOnFall;
+    private final List<String> errors;
 
     private final RestTemplate restTemplate;
 
     private final CoinMarketCapService coinMarketCapService;
 
 
-    public EventService(List<Subscribe> subscribesOnUpdate, List<Subscribe> subscribesOnFall, RestTemplateBuilder restTemplateBuilder, CoinMarketCapService coinMarketCapService) {
+    public EventService(List<Subscribe> subscribesOnUpdate, List<Subscribe> subscribesOnFall, List<String> errors, RestTemplateBuilder restTemplateBuilder, CoinMarketCapService coinMarketCapService) {
         this.subscribesOnUpdate = subscribesOnUpdate;
         this.subscribesOnFall = subscribesOnFall;
+        this.errors = errors;
         this.restTemplate = restTemplateBuilder.build();
         this.coinMarketCapService = coinMarketCapService;
     }
@@ -81,7 +83,15 @@ public class EventService {
         }
     }
 
+    @Scheduled(fixedRate = 3000)
     public void errorEvent(String chatId){
-        restTemplate.postForObject(baseUrl.concat(errorUrl), chatId, String.class);
+        var url = baseUrl.concat(errorUrl);
+
+        for (var i = 0; i < errors.size(); i++){
+            var error = errors.get(i);
+            errors.remove(error);
+            i--;
+            restTemplate.postForObject(url, error, String.class);
+        }
     }
 }

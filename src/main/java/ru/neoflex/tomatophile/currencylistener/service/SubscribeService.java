@@ -1,7 +1,6 @@
 package ru.neoflex.tomatophile.currencylistener.service;
 
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 import ru.neoflex.tomatophile.currencylistener.pojo.Subscribe;
 
@@ -12,6 +11,7 @@ import java.util.List;
 public class SubscribeService {
     private final List<Subscribe> subscribesOnUpdate;
     private final List<Subscribe> subscribesOnFall;
+    private final List<String> errors;
 
     private final CoinMarketCapService coinMarketCapService;
 
@@ -27,9 +27,8 @@ public class SubscribeService {
             subscribe.setLastPrice(lastPrice);
             subscribesOnFall.add(subscribe);
         } catch (Exception e){
-            eventService.errorEvent(subscribe.getChatId());
+            errors.add(subscribe.getChatId());
         }
-
     }
 
     public void unsubscribeOnUpdate(Subscribe subscribe) {
