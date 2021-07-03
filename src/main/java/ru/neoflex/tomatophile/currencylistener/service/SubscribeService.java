@@ -14,12 +14,18 @@ public class SubscribeService {
 
     private final CoinMarketCapService coinMarketCapService;
 
+    private final EventService eventService;
+
     public void subscribeOnUpdate(Subscribe subscribe){
         subscribesOnUpdate.add(subscribe);
     }
 
     public void subscribeOnFall(Subscribe subscribe){
-        subscribe.setLastPrice(coinMarketCapService.getOneByFigi(subscribe.getFigi()).getPrice());
+        try {
+            subscribe.setLastPrice(coinMarketCapService.getOneByFigi(subscribe.getFigi()).getPrice());
+        } catch (Exception e){
+            eventService.errorEvent(subscribe.getChatId());
+        }
 
         subscribesOnFall.add(subscribe);
     }

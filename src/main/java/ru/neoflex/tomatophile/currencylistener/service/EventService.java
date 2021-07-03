@@ -53,7 +53,7 @@ public class EventService {
                 subscribesOnUpdate.remove(subscribe);
                 i--;
 
-                restTemplate.postForObject(baseUrl.concat(errorUrl), chatId, String.class);
+                errorEvent(chatId);
             }
         }
     }
@@ -68,7 +68,6 @@ public class EventService {
 
             var lastCurrency = subscribesOnFall.get(i);
 
-            try {
                 var currCurrency = coinMarketCapService.getOneByFigi(lastCurrency.getFigi());
 
                 if (lastCurrency.getLastPrice() - lastCurrency.getLastPrice() * lastCurrency.getFallPercent() / 100 >= currCurrency.getPrice()) {
@@ -79,12 +78,10 @@ public class EventService {
 
                     restTemplate.postForObject(url, event, Event.class);
                 }
-            } catch (Exception e){
-                subscribesOnFall.remove(lastCurrency);
-                i--;
-
-                restTemplate.postForObject(baseUrl.concat(errorUrl), chatId, String.class);
-            }
         }
+    }
+
+    public void errorEvent(String chatId){
+        restTemplate.postForObject(baseUrl.concat(errorUrl), chatId, String.class);
     }
 }
