@@ -6,6 +6,6 @@ import lombok.Data;
 public class Subscribe {
     private String chatId;
     private String figi;
-    private int fallPercent;
+    private Double fallPercent;
     private Double lastPrice;
 }
